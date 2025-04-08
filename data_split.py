@@ -28,6 +28,7 @@ def create_folder(dataset_root):
         os.makedirs(os.path.join(dataset_root, folder, "labels"), exist_ok = True)
 
 
+# 划分数据集
 def DataSplit():
     imageFolderPath = "图像文件夹路径"
     labelFolderPath = "标签文件夹路径"
@@ -38,7 +39,7 @@ def DataSplit():
 
     fullFileNames = [i for i in os.listdir(imageFolderPath)]
     nums = len(fullFileNames)
-
+    index = 0
     # 创建文件夹结构
     create_folder(outputFolderPath)
 
@@ -56,6 +57,8 @@ def DataSplit():
             txtFileName = fileName + ".txt"
             shutil.copy(os.path.join(imageFolderPath, fullFileName),
                         os.path.join(outputFolderPath, 'train', 'images', fullFileName))
+            index += 1
+            print(f"Copied {fullFileName} [{index} / {nums}]")
             # 如果存在标签就复制标签
             if os.path.exists(os.path.join(labelFolderPath, txtFileName)):
                 shutil.copy(os.path.join(labelFolderPath, txtFileName),
@@ -67,6 +70,8 @@ def DataSplit():
             txtFileName = fileName + ".txt"
             shutil.copy(os.path.join(imageFolderPath, fullFileName),
                         os.path.join(outputFolderPath, 'val', 'images', fullFileName))
+            index += 1
+            print(f"Copied {fullFileName} [{index} / {nums}]")
             # 如果存在标签就复制标签
             if os.path.exists(os.path.join(labelFolderPath, txtFileName)):
                 shutil.copy(os.path.join(labelFolderPath, txtFileName),
@@ -88,6 +93,8 @@ def DataSplit():
             txtFileName = fileName + ".txt"
             shutil.copy(os.path.join(imageFolderPath, fullFileName),
                         os.path.join(outputFolderPath, "train", "images", fullFileName))
+            index += 1
+            print(f"Copied {fullFileName} [{index} / {nums}]")
             # 如果存在标签就复制标签
             if os.path.exists(os.path.join(labelFolderPath, txtFileName)):
                 shutil.copy(os.path.join(labelFolderPath, txtFileName),
@@ -99,6 +106,8 @@ def DataSplit():
             txtFileName = fileName + ".txt"
             shutil.copy(os.path.join(imageFolderPath, fullFileName),
                         os.path.join(outputFolderPath, "val", "images", fullFileName))
+            index += 1
+            print(f"Copied {fullFileName} [{index} / {nums}]")
             # 如果存在标签就复制标签
             if os.path.exists(os.path.join(labelFolderPath, txtFileName)):
                 shutil.copy(os.path.join(labelFolderPath, txtFileName),
@@ -110,12 +119,13 @@ def DataSplit():
             txtFileName = fileName + ".txt"
             shutil.copy(os.path.join(imageFolderPath, fullFileName),
                         os.path.join(outputFolderPath, "test", "images", fullFileName))
+            index += 1
+            print(f"Copied {fullFileName} [{index} / {nums}]")
             # 如果存在标签就复制标签
             if os.path.exists(os.path.join(labelFolderPath, txtFileName)):
                 shutil.copy(os.path.join(labelFolderPath, txtFileName),
                             os.path.join(outputFolderPath, "test", "labels", txtFileName))
-
-    print("数据集随机划分及文件夹结构创建完毕")
+    print("数据集划分完毕")
 
 
 # 将图像处理成640x640大学
