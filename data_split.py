@@ -8,10 +8,10 @@ from PIL import Image
 import random
 
 
-# 将图像重命名
+# 将图像批量以数字顺序重命名
 def rename_files():
     foldPath = "图像文件夹路径"
-    # 文件名其实标签
+    # 文件名起始标签
     nameIndex = 1
     for fileName in os.listdir(foldPath):
         newName = str(nameIndex) + ".jpg"
@@ -128,7 +128,7 @@ def data_split():
     print("数据集划分完毕")
 
 
-# 将图像处理成640x640大学
+# 将图像处理成640x640大小
 def resize_image():
     imagePath = "原始图像文件夹路径"
     savePath = "输出图像文件夹路径"
@@ -230,7 +230,7 @@ def draw_labels():
                         cv2.imwrite(output_filepath, image)
 
 
-# 查没有标签的图片
+# 检查并输出没有标签的图片名
 def check_with_label():
     imagePath = "图像文件夹路径"
     labelPath = "标签文件夹路径"
@@ -240,7 +240,7 @@ def check_with_label():
             print(rawName)
 
 
-# 查没有图片的标签
+# 检查并输出没有图片的标签名
 def check_with_image():
     imagePath = "图像文件夹路径"
     labelPath = "标签文件夹路径"
