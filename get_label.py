@@ -8,6 +8,7 @@ import torch
 import numpy as np
 
 
+# 随机图像对比度增强，自动化脚本的一部分
 def random_contrast(ImagePath, LabelPath):
     count = len(os.listdir(ImagePath))
     cnt = 0
@@ -26,7 +27,7 @@ def random_contrast(ImagePath, LabelPath):
         print(f"Contrast: {fullFileName} [{cnt}/{count}]")
 
 
-# 删除没有label的图片
+# 删除没有label的图片，自动化脚本的一部分
 def delete_images(ImagePath, LabelPath):
     labelList = os.listdir(LabelPath)
     num = 0
@@ -40,6 +41,7 @@ def delete_images(ImagePath, LabelPath):
     print(f"Deleted {num} images")
 
 
+# 将图像分辨率改为640x640，自动化脚本的一部分
 def resize_image(ImagePath):
     lst = [i for i in os.listdir(ImagePath)]
     count = len(os.listdir(ImagePath))
@@ -56,16 +58,16 @@ def resize_image(ImagePath):
         print(f"Resize: {fileName} [{cnt}/{count}]")
 
 
+# 获取图像label
 def get_label(Result, ImagePath):
     lines = []
     for img in Result:
+        # 类型名
         name = img["name"]
+        # 类型id
+        className = img["class"]
+        # 标注框
         box = img["box"]
-        className = 0
-        # if name == "regulator":
-        #     className = 0
-        # else:
-        #     className = 1
 
         image = cv2.imread(ImagePath)
         imageHeight, imageWidth, _ = image.shape
@@ -91,20 +93,23 @@ def get_label(Result, ImagePath):
     return lines
 
 
+# 自动化图像预处理与打标主程序
 def main():
     imageFolder = "图像文件夹路径"
     labelFolder = "标签文件夹路径"
+    modelPath = "模型路径"
+    modelConf = "模型置信度，默认0.5，建议稍微高一点"
     if not os.path.exists(labelFolder):
         os.makedirs(labelFolder)
     resize_image(imageFolder)
-    model = YOLO(model = "模型文件夹", task = "detect")
+    model = YOLO(model = modelPath, task = "detect")
     lst = [i for i in os.listdir(imageFolder)]
 
 
     def detect(fileName):
         imagePath = os.path.join(imageFolder,
                                  fileName)
-        result = model(source = imagePath, save = False, conf = 0.6, imgsz = 640)
+        result = model(source = imagePath, save = False, conf = modelConf, imgsz = 640)
         detectResult = json.loads(result[0].to_json())
         if detectResult == []:
             os.remove(imagePath)
