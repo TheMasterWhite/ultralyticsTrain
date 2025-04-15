@@ -33,5 +33,5 @@ def delete_duplicates(directory):
 
 
 if __name__ == "__main__":
-    directory = ""
+    directory = "图像文件夹路径"
     delete_duplicates(directory)

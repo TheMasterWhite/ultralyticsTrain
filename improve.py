@@ -10,6 +10,7 @@ from torchvision.transforms.functional import adjust_contrast
 from PIL import Image
 
 
+# 随机对比度增强
 def random_contrast():
     imagePath = "图像文件夹路径"
     labelPath = "标签文件夹路径"
