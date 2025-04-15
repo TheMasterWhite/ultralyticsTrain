@@ -96,7 +96,7 @@ def main():
     labelFolder = "标签文件夹路径"
     if not os.path.exists(labelFolder):
         os.makedirs(labelFolder)
-    # resize_image(imageFolder)
+    resize_image(imageFolder)
     model = YOLO(model = "模型文件夹", task = "detect")
     lst = [i for i in os.listdir(imageFolder)]
 

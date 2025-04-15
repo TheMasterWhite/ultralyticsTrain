@@ -29,7 +29,7 @@ def create_folder(dataset_root):
 
 
 # 划分数据集
-def DataSplit():
+def data_split():
     imageFolderPath = "图像文件夹路径"
     labelFolderPath = "标签文件夹路径"
     outputFolderPath = "输出文件夹路径"
@@ -147,7 +147,7 @@ def resize_image():
         print(f"{fileName} [{cnt}/{count}]")
 
 
-# 删除没有label的图片
+# 删除没有标签的图片
 def delete_images():
     imagePath = "图像文件夹路径"
     labelPath = "标签文件夹路径"
@@ -160,7 +160,7 @@ def delete_images():
             print(fullFileName)
 
 
-# 删除没有图片的label
+# 删除没有图片的标签
 def delete_labels():
     imagePath = "图像文件夹路径"
     labelPath = "标签文件夹路径"
@@ -173,5 +173,82 @@ def delete_labels():
             print(fullFileName)
 
 
+# 把标签画出来
+def draw_labels():
+    imagePath = "图像文件夹路径"
+    labelPath = "标签文件夹路径"
+    outputPath = "输出文件夹路径"
+    sum = len(imagePath)
+    i = 0
+    # 确保输出文件夹存在
+    if not os.path.exists(outputPath):
+        os.makedirs(outputPath)
+
+    # 遍历图像文件夹中的所有文件
+    for filename in os.listdir(imagePath):
+        imageFilePath = os.path.join(imagePath, filename)
+        labelFilePath = os.path.join(labelPath, filename.replace(".jpg", ".txt"))
+        outputFilePath = os.path.join(outputPath, filename)
+
+        # 读取图像
+        i += 1
+        print(f"{filename} [{i}/{sum}]")
+        image = cv2.imread(imageFilePath)
+        image_height, image_width, _ = image.shape
+
+        # 检查标签文件是否存在
+        if os.path.exists(labelFilePath):
+            # 读取标签文件
+            with open(labelFilePath, 'r') as file:
+                lines = file.readlines()
+                for line in lines:
+                    # 解析标签
+                    class_id, x_center, y_center, width, height = map(float, line.split())
+                    # 将归一化坐标转换为像素值
+                    x_center *= image_width
+                    y_center *= image_height
+                    width *= image_width
+                    height *= image_height
+
+                    # 计算边界框的角点坐标
+                    x1 = int(x_center - (width / 2))
+                    y1 = int(y_center - (height / 2))
+                    x2 = int(x_center + (width / 2))
+                    y2 = int(y_center + (height / 2))
+
+                    # print(f"{filename} --> x1:{x1} y1:{y1} x2:{x2} y2:{y2}")
+
+                    # 配置不同分类id标注框的颜色
+                    if class_id == 0:
+                        cv2.rectangle(image, (x1, y2), (x2, y1), (0, 255, 0), 5)
+                        cv2.imwrite(outputFilePath, image)
+                    elif class_id == 1:
+                        cv2.rectangle(image, (x1, y1), (x2, y2), (0, 0, 255), 5)
+                        cv2.imwrite(output_filepath, image)
+                    elif class_id == 2:
+                        cv2.rectangle(image, (x1, y1), (x2, y2), (255, 0, 0), 5)
+                        cv2.imwrite(output_filepath, image)
+
+
+# 查没有标签的图片
+def check_with_label():
+    imagePath = "图像文件夹路径"
+    labelPath = "标签文件夹路径"
+    for fileName in os.listdir(imagePath):
+        rawName = fileName.split(".")[0] + ".txt"
+        if not os.path.exists(os.path.join(labelPath, rawName)):
+            print(rawName)
+
+
+# 查没有图片的标签
+def check_with_image():
+    imagePath = "图像文件夹路径"
+    labelPath = "标签文件夹路径"
+    for fileName in os.listdir(labelPath):
+        rawName = fileName.split(".")[0] + ".jpg"
+        if not os.path.exists(os.path.join(imagePath, rawName)):
+            print(rawName)
+
+
 if __name__ == '__main__':
-    DataSplit()
+    data_split()
