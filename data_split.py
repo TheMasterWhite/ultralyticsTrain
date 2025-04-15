@@ -147,5 +147,31 @@ def resize_image():
         print(f"{fileName} [{cnt}/{count}]")
 
 
+# 删除没有label的图片
+def delete_images():
+    imagePath = "图像文件夹路径"
+    labelPath = "标签文件夹路径"
+    labelList = os.listdir(labelPath)
+    for fullFileName in os.listdir(imagePath):
+        fileName = Tools.GetFileName(fullFileName)
+        txtName = fileName + ".txt"
+        if txtName not in labelList:
+            os.remove(os.path.join(imagePath, fullFileName))
+            print(fullFileName)
+
+
+# 删除没有图片的label
+def delete_labels():
+    imagePath = "图像文件夹路径"
+    labelPath = "标签文件夹路径"
+    imageList = os.listdir(imagePath)
+    for fullFileName in os.listdir(labelPath):
+        fileName = fullFileName.split(".")[0]
+        imageName = fileName + ".jpg"
+        if imageName not in imageList:
+            os.remove(os.path.join(labelPath, fullFileName))
+            print(fullFileName)
+
+
 if __name__ == '__main__':
     DataSplit()
