@@ -1,6 +1,7 @@
 import torch
 
 
+# 验证CUDA是否可用打印版本版本
 def check_cuda():
     print(f"PyTorch版本：{torch.__version__}")
     if torch.cuda.is_available():
